@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com Alguma fonte');
+
+:root {
+    --background-color: #ffffff4d;
+    --background-task-color: #ffffff4d;
+
+    --btn-color: #FFB6C1;
+    --btn-color-hover: #DB7093;
+
+    --wrong-answer: #b40000;
+}
+
+/* Global css variables -------------------------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    /* font-family: 'Oxanium', cursive; */
+    user-select: none;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgb(2, 0, 36);
+    background: -moz-linear-gradient(0deg, rgba(2, 0, 36, 1) 0%, rgba(80, 36, 125, 1) 35%, rgba(178, 113, 231, 1) 100%);
+    background: -webkit-linear-gradient(0deg, rgba(2, 0, 36, 1) 0%, rgba(80, 36, 125, 1) 35%, rgba(178, 113, 231, 1) 100%);
+    background: linear-gradient(0deg, rgba(2, 0, 36, 1) 0%, rgba(80, 36, 125, 1) 35%, rgba(178, 113, 231, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#020024", endColorstr="#b271e7", GradientType=1);
+}
+
+.main-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: red;
+}
+
+.archive-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 700px;
+    height: 400px;
+    background: violet;
+}
+
+.archive-display {
+    height: 15%;
+    width: 40%;
+    background: green;
+}
+
+.navbar {
+    position: absolute;
+    width: 100%;
+    height: 10%;
+    background: blue;
+    top: 0;
+    z-index: 1;
+}
+
+.help-box {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    background: yellow;
+    bottom: 10%;
+    right: 5%;
+}
+
+.menu-bar {
+    position: absolute;
+    height: 100%;
+    width: 20%;
+    background: orange;
+    left: 0;
+}
