@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const menuBar = document.querySelector('.menu-bar');
     const helpButton = document.querySelector('.help-button');
     const helpBox = document.querySelector('.help-box');
+    const logoNavbar = document.querySelector('.logo-navbar');
 
     menuBar.addEventListener('click', function (event) {
         // Obtendo as coordenadas do clique.
@@ -20,7 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
             clickY <= pseudoRect.top + parseFloat(pseudoStyles.height)
         ) {
             menuBar.classList.toggle('close-menu');
-         }
+            logoNavbar.classList.toggle('opacity-0');
+        }
     });
 
 

@@ -1,13 +1,14 @@
 /* @import url('https://fonts.googleapis.com Alguma fonte'); */
 
 :root {
-    --background-color: #ffffff4d;
-    --background-task-color: #ffffff4d;
 
-    --btn-color: #FFB6C1;
-    --btn-color-hover: #DB7093;
+    --primary-color: #622F7A;
+    --secondary-color: #5C2C72;
+    --tertiary-color: #49235A;
 
-    --wrong-answer: #b40000;
+    --glass-color: #ee82ee69;
+
+
 }
 
 /* Global css variables -------------------------------------- */
@@ -55,7 +56,7 @@ body {
     height: 200px;
     border-radius: 25px;
     border: dashed 3px rgb(46, 46, 46);
-    background: #ee82ee69;
+    background: var(--glass-color);
     cursor: pointer;
 }
 
@@ -69,7 +70,7 @@ body {
     color: #d8d8d8;
     border-radius: 20px;
     margin: 20px 0;
-    background: #600a68;
+    background: var(--tertiary-color);
 }
 
 .cloud-icon {
@@ -84,14 +85,13 @@ body {
     align-items: center;
     width: 100%;
     height: 10%;
-    background: #600a68;
     top: 0;
     z-index: 1;
 }
 
-.logo {
+.logo-navbar {
     height: 75%;
-    width: 25%;
+    width: 100%;
     background-image: url('/imgs/tecnospeed-white.svg');
     background-repeat: no-repeat;
     background-position: center;
@@ -99,30 +99,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background: green; */
-}
-
-.nav-itens-box {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 75%;
-    height: 100%;
-}
-
-.nav-item {
-    display: flex;
-    justify-content: center;
-    font-size: 24px;
-    padding: 6px 12px;
-    color: #fff;
-    cursor: pointer;
-    transition: .5s;
-}
-
-.nav-item:hover {
-    text-decoration: underline;
-    background: #48024e;
+    transition: .8s;
 }
 
 .help-button {
@@ -131,7 +108,7 @@ body {
     align-items: center;
     font-size: 5em;
     position: absolute;
-    background: #b6b6b683;
+    background: var(--glass-color);
     border-radius: 50%;
     border: 2px solid #fff;
     bottom: 8%;
@@ -153,8 +130,8 @@ body {
     transform: translateY(-105%) translateX(-30%);
     width: 0;
     height: 0;
-    border-radius: 15px;    
-    background: #b6b6b683;
+    border-radius: 15px;
+    background: var(--glass-color);
     transition: .5s;
 }
 
@@ -166,13 +143,18 @@ body {
 
 .menu-bar {
     position: absolute;
-    height: 90%;
-    width: 20%;
+    height: 100%;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     transform: translateX(-101%);
-    background: #770699;
+    background: var(--secondary-color);
     left: 0;
     bottom: 0;
     transition: 1s;
+    z-index: 2;
 }
 
 .menu-bar::before {
@@ -185,10 +167,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #770699;
+    background: var(--secondary-color);
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
-    width: 18%;
+    padding: 0 0 0 10px;
+    width: 15%;
     height: 7%;
     top: 0;
     left: 98%;
@@ -198,4 +181,64 @@ body {
 
 .close-menu {
     transform: translateX(0%);
+}
+
+
+.logo-menu {
+    position: absolute;
+    top: 0;
+    height: 10%;
+    width: 60%;
+    background-image: url('/imgs/tecnospeed-white.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .8s;
+}
+
+.menu-itens {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: top;
+    height: 70%;
+    width: 90%;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 28px;
+    padding: 15px 0;
+    margin-bottom: 30px;
+    color: #fff;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.menu-item:hover {
+    text-decoration: underline;
+    background: #48024e;
+}
+
+.opacity-0 {
+    opacity: 0;
+}
+
+/* -------------------------------------------------------------------------------------- */
+@media (max-height: 600px) {
+    .help-box-open {
+        width: 250px;
+        height:300px;
+    }
+
+    .menu-bar::before {
+        width: 20%;
+        height: 10%;
+    }
 }
