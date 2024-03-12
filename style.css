@@ -179,7 +179,7 @@ body {
     transition: 1s;
 }
 
-.close-menu {
+.open-menu {
     transform: translateX(0%);
 }
 

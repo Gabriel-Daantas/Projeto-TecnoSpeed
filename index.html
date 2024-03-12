@@ -9,13 +9,13 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
 
-    <script src="script.js"></script>
+    <script defer src="script.js"></script>
     <title>Conversor</title>
 </head>
 
 <body>
     <div class="container">
-        <div class="menu-bar">
+        <div class="menu-bar open-menu">
             <!-- <div class="night-mode"><i class="fa-regular fa-moon"></i></div> -->
             <div class="logo-menu"></div>
             <div class="menu-itens">
@@ -27,23 +27,20 @@
         </div>
         <div class="main-box">
             <div class="navbar">
-                <div class="logo-navbar"></div>
-                <div class="nav-itens-box">
-                    <!-- <div class="nav-item">Item 1</div>
-                    <div class="nav-item">Item 2</div>
-                    <div class="nav-item">Item 3</div>
-                    <div class="nav-item">Item 4</div> -->
-                </div>
+                <div class="logo-navbar opacity-0"></div>
+                <!-- <div class="nav-itens-box"></div> -->
             </div>
             <div class="archive-box">
                 <i class="fa-solid fa-cloud-arrow-down cloud-icon"></i>
-                <div class="archive-display">Solte seu arquivo aqui!</div>
+                <div class="archive-display">Clique ou arraste seu arquivo aqui!</div>
+                <input type="file" id="fileInput" style="display: none;">
             </div>
         </div>
         <div class="help-button help-button-hover"><i class="fa-regular fa-circle-question help-icon"></i>
             <div class="help-box"></div>
         </div>
     </div>
+
 
 </body>
 
