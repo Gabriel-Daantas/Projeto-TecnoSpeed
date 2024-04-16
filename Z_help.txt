@@ -1,0 +1,12 @@
+
+Alguns comandos rodados no Prompt:
+
+#Gera uma chave privada e um certificado:
+openssl req -x509 -newkey rsa:4096 -keyout chave.key -out certificado.crt -days 365 -nodes
+
+#Conversão de .CRT + .KEY para .PFX:
+openssl pkcs12 -export -out arquivo.pfx -inkey chave.key -in certificado.crt
+
+#Conversão de .PFX para .CRT + .KEY:
+openssl pkcs12 -in arquivo.pfx -out certificado.crt -clcerts -nokeys
+openssl pkcs12 -in arquivo.pfx -out chave.key -nocerts -nodes

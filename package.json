@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.19.2"
+    "electron": "^29.3.0",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.0",
+    "openssl.js": "^1.2.0"
   }
 }
