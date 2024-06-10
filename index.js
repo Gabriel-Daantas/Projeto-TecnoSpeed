@@ -12,10 +12,11 @@ function createApp() {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
-        }
+        },
+        icon: 'imgs/favicon.ico'
     });
 
-    // Menu.setApplicationMenu(null);
+    Menu.setApplicationMenu(null);
     mainWindow.maximize()
     mainWindow.loadFile(`templates/index.html`)
 }

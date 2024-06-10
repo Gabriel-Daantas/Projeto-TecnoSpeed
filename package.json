@@ -8,8 +8,28 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "electron": "^29.3.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "Conversor Tecnospeed",
+    "productName": "Conversor Tecnospeed",
+    "directories": {
+      "output": "../Conversor Tecnospeed"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "imgs/favicon.ico"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  },
+  "dependencies": {
     "express": "^4.19.2",
     "nodemon": "^3.1.0",
     "openssl.js": "^1.2.0"
