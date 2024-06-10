@@ -4,6 +4,10 @@ Alguns comandos rodados no Prompt:
 #Gera uma chave privada e um certificado:
 openssl req -x509 -newkey rsa:4096 -keyout chave.key -out certificado.crt -days 365 -nodes
 
+#Esse gera pedindo uma senha extra:
+openssl req -x509 -newkey rsa:4096 -keyout chave.key -out certificado.crt -days 365
+
+
 #Conversão de .CRT + .KEY para .PFX:
 openssl pkcs12 -export -out arquivo.pfx -inkey chave.key -in certificado.crt
 

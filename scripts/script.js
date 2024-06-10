@@ -6,10 +6,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const { ipcRenderer } = require('electron');
 
     const menuBar = document.querySelector('.menu-bar');
-    const helpButton = document.querySelector('.help-button');
-    const helpBox = document.querySelector('.help-box');
     const logoNavbar = document.querySelector('.logo-navbar');
     const archiveBox = document.querySelector('.archive-box');
+    const archiveDisplay = document.querySelector('.archive-display');
+
+    const archivesStatus = document.querySelector('.archives-status');
+    const archiveStatusCRT = document.querySelector('.archive-status-crt');
+    const archiveStatusKey = document.querySelector('.archive-status-key');
+    const archiveStatusPFX = document.querySelector('.archive-status-pfx');
+
+    const removeArchiveButtons = document.querySelectorAll('.remove-icon');
+
+    let crtPath = '';
+    let keyPath = '';
+    let pfxPath = '';
+    let files = '';
 
     menuBar.addEventListener('click', function (event) {
 
@@ -34,15 +45,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    helpButton.addEventListener('click', function () {
-        helpBox.classList.toggle('help-box-open');
-        helpButton.classList.toggle('help-button-hover');
-    })
-
-
     // Adiciona um ouvinte de evento ao botão de conversão
-    archiveBox.addEventListener('click', function () {
+    archiveDisplay.addEventListener('click', function () {
         document.getElementById('fileInput').click();
+    });
+
+    document.getElementById('fileInput').addEventListener('change', function (event) {
+        const files = event.target.files;
+        verifyFiles(files);
     });
 
     archiveBox.addEventListener('dragover', function (event) {
@@ -51,13 +61,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     archiveBox.addEventListener('drop', function (event) {
         event.preventDefault();
-        const files = event.dataTransfer.files;
-        handleFile(files);
+        files = event.dataTransfer.files;
+        verifyFiles(files);
     });
 
+    archiveBox.addEventListener('mouseover', function (event) {
+        document.querySelector('.cloud-icon').classList.add('cloud-keyframe');
+    });
+    archiveBox.addEventListener('mouseout', function (event) {
+        document.querySelector('.cloud-icon').classList.remove('cloud-keyframe');
+    });
 
     // Função para manipular o arquivo selecionado
-    function handleFile(files) {
+    function verifyFiles(files) {
         const filesArray = Array.from(files);
 
         const crtFiles = filesArray.filter(file => file.name.includes('.crt'));
@@ -68,14 +84,13 @@ document.addEventListener('DOMContentLoaded', function () {
             alert("Há mais de 1 arquivo .CRT ou .KEY, para evitar erros de conversão, insira somente um par (.CRT + .KEY).")
 
         } else if ((crtFiles.length !== 0 || keyFiles.length !== 0) && pfxFiles.length !== 0) {
-            alert(`Para evitar erros de conversão, insira somente um par (.CRT + .KEY) ou arquivos .PFX, não misture os arquivos.`)
+            alert(`Para evitar erros de conversão, insira somente um par (.CRT + .KEY) ou um arquivo .PFX, não misture os arquivos.`)
 
-        } else if ((crtFiles.length === 1 && keyFiles.length !== 1) || (crtFiles.length !== 1 && keyFiles.length === 1)) {
-            alert(`Inseriu somente um arquivo tipo .CRT ou .KEY, insira um par (.CRT + .KEY).`)
+        } else if (pfxFiles.length > 1) {
+            alert(`Para evitar erros de conversão, insira somente um arquivo .PFX.`)
 
         } else {
-            let crtPath = ''
-            let keyPath = ''
+
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
 
@@ -85,17 +100,39 @@ document.addEventListener('DOMContentLoaded', function () {
                     const filePath = file.path;
 
                     if (fileExtension === 'PFX') {
-                        ipcRenderer.send("convertPFXtoCRTandKEY", filePath);
+                        pfxPath = filePath;
+                        resetFiles("crt e key");
+
+                        if (archivesStatus.classList.contains('remove-archives-status')) {
+                            archivesStatus.classList.remove('remove-archives-status');
+                        }
+
+                        archiveStatusPFX.classList.remove('hide-archive-status');
+                        archiveStatusCRT.classList.add('hide-archive-status');
+                        archiveStatusKey.classList.add('hide-archive-status');
+
+                        revealPassInput(true);
 
                     } else if (fileExtension === 'KEY' || fileExtension === 'CRT') {
+                        resetFiles("pfx");
+
+                        if (archivesStatus.classList.contains('remove-archives-status')) {
+                            archivesStatus.classList.remove('remove-archives-status');
+                        }
+                        archiveStatusPFX.classList.add('hide-archive-status');
+                        archiveStatusKey.classList.remove('hide-archive-status');
+                        archiveStatusCRT.classList.remove('hide-archive-status');
+
                         if (fileExtension === 'CRT') {
                             crtPath = filePath;
+                            archiveStatusCRT.classList.add('containArchive');
                         } else {
                             keyPath = filePath;
+                            archiveStatusKey.classList.add('containArchive');
                         }
 
                         if (crtPath && keyPath) {
-                            ipcRenderer.send("convertCRTandKEYtoPFX", crtPath, keyPath);
+                            revealPassInput(true);
                         }
 
                     } else {
@@ -110,25 +147,98 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    // Função para manipular os arquivos arrastados
-    function handleFiles(files) {
-        for (let i = 0; i < files.length; i++) {
-            alert("Nome do arquivo: " + files[i].name);
+    document.querySelector('.pass-submit').addEventListener('click', function () {
+        const senha = document.querySelector('.pass-input').value;
+
+        if (pfxPath) {
+            ipcRenderer.removeAllListeners('conversionResult');
+            ipcRenderer.send("convertPFXtoCRTandKEY", pfxPath, senha);
+
+            ipcRenderer.on('conversionResult', (event, response) => {
+                if (response.success) {
+
+                    const mensagem = response.message;
+
+                    alert(`Resultado da conversão: ${mensagem}`);
+                    // console.log('Resultado da conversão:', response.message);
+                } else {
+                    alert('Senha Incorreta!')
+                }
+            });
+
+        } else if (crtPath && keyPath) {
+            ipcRenderer.removeAllListeners('conversionResult');
+            ipcRenderer.send("convertCRTandKEYtoPFX", crtPath, keyPath, senha);
+
+            ipcRenderer.on('conversionResult', (event, response) => {
+                if (response.success) {
+
+                    const mensagem = response.message;
+
+                    alert(`Resultado da conversão: ${mensagem}`);
+                    // console.log('Resultado da conversão:', response.message);
+                } else {
+                    alert('Senha Incorreta!')
+                }
+            });
+        }
+    });
+
+
+
+    removeArchiveButtons.forEach(removeButton => {
+        removeButton.addEventListener('click', () => {
+            resetFiles(removeButton.id);
+        });
+    });
+
+
+    function resetDisplayBox() {
+        archivesStatus.classList.add('remove-archives-status');
+        archiveStatusPFX.classList.add('hide-archive-status');
+        archiveStatusCRT.classList.add('hide-archive-status');
+        archiveStatusKey.classList.add('hide-archive-status');
+        revealPassInput(false);
+    }
+
+    function resetFiles(fileToReset) {
+        if (fileToReset == 'pfx') {
+            pfxPath = '';
+
+        } else if (fileToReset == 'crt') {
+            crtPath = '';
+            archiveStatusCRT.classList.remove('containArchive');
+
+        } else if (fileToReset == 'key') {
+            keyPath = '';
+            archiveStatusKey.classList.remove('containArchive');
+
+        } else if (fileToReset == 'crt e key') {
+            crtPath = '';
+            keyPath = '';
+            archiveStatusCRT.classList.remove('containArchive');
+            archiveStatusKey.classList.remove('containArchive');
+        }
+
+        if (!pfxPath && !crtPath && !keyPath) {
+            resetDisplayBox();
+
+        }
+
+        if (!crtPath || !keyPath) {
+            revealPassInput(false);
         }
     }
 
 
-    function convertPFXtoCRTandKEY(PFXFile, exportPassword) {
-        const blob = new Blob([PFXFile], { type: 'application/octet-stream' });
-        // const blob = new Blob([PFXFile], { type: 'application/x-x509-ca-cert' });
+    function revealPassInput(hide) {
+        if (hide) {
+            document.querySelector('.password-box').classList.remove('hide-password-box');
+            document.querySelector('.pass-input').value = '';
 
-        // Usando o método saveAs do FileSaver.js para oferecer uma opção de salvar o arquivo
-        saveAs(blob, 'Documento.pfx');
-
-    }
-
-    function convertCRTandKEYtoPFX(PFXFile, exportPassword) {
-
+        } else {
+            document.querySelector('.password-box').classList.add('hide-password-box');
+        }
     }
 
     function salvarArquivo(fileName, PFXFile) {
