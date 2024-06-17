@@ -32,11 +32,13 @@ function ensureOutputDirectory() {
 
 
 ipcMain.on('convertPFXtoCRTandKEY', (event, PFXFile, exportPassword) => {
-    ensureOutputDirectory();
+    
+    // Comentar para rodar o npx electron-builder;
+    // ensureOutputDirectory();
 
     dialog.showOpenDialog({
         title: 'Selecionar pasta para salvar arquivo',
-        defaultPath: 'output/',
+        defaultPath: '',
         properties: ['openDirectory']
     }).then(result => {
         if (result.canceled) {
